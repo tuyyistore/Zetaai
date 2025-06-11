@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeta AI Bot - WhatsApp Bot Premium</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            animation: rotate 10s linear infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5));
+            animation: float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #25d366, #128c7e);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.6s forwards;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
+        }
+
+        /* Floating Animation */
+        .floating {
+            position: absolute;
+            top: 20%;
+            right: 10%;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating:nth-child(2) {
+            top: 60%;
+            left: 10%;
+            animation-delay: -2s;
+        }
+
+        .floating:nth-child(3) {
+            top: 40%;
+            left: 50%;
+            animation-delay: -4s;
+        }
+
+        .floating:nth-child(4) {
+            top: 30%;
+            right: 30%;
+            width: 60px;
+            height: 60px;
+            background: url('https://files.catbox.moe/75semu.jpg') center/cover;
+            border-radius: 50%;
+            animation: float 4s ease-in-out infinite, spin 15s linear infinite;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+        }
+
+        .floating:nth-child(5) {
+            top: 70%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            background: url('https://files.catbox.moe/75semu.jpg') center/cover;
+            border-radius: 50%;
+            animation: float 5s ease-in-out infinite, pulse 3s ease-in-out infinite;
+            animation-delay: -3s;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: url('https://files.catbox.moe/75semu.jpg') center/cover;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-card:hover::before {
+            opacity: 0.6;
+            transform: scale(1.2);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .pricing-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 25px;
+            height: 25px;
+            background: url('https://files.catbox.moe/75semu.jpg') center/cover;
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: rotate 20s linear infinite;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .pricing-card:hover::before {
+            left: 100%;
+        }
+
+        .pricing-card:hover {
+            transform: scale(1.05);
+        }
+
+        .pricing-card.premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: 3px solid #ffd700;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #25d366;
+        }
+
+        .pricing-card.premium .price {
+            color: #ffd700;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-card.premium .feature-list li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            color: #25d366;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .pricing-card.premium .feature-list li::before {
+            color: #ffd700;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #25d366;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+
+        @keyframes glow {
+            0% { filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)); }
+            100% { filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.8)); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .hero-content p { font-size: 1.2rem; }
+            .nav-links { display: none; }
+            .contact-info { flex-direction: column; }
+        }
+
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <img src="https://files.catbox.moe/75semu.jpg" alt="Zeta AI Logo">
+                🤖 Zeta AI
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Fitur</a></li>
+                <li><a href="#pricing">Harga</a></li>
+                <li><a href="#contact">Kontak</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="floating"></div>
+        <div class="floating"></div>
+        <div class="floating"></div>
+        <div class="floating"></div>
+        <div class="floating"></div>
+        <div class="hero-content">
+            <h1>
+                <img src="https://files.catbox.moe/75semu.jpg" alt="Zeta AI" class="hero-logo">
+                Zeta AI Bot
+            </h1>
+            <p>Bot WhatsApp Terpintar dengan AI Canggih</p>
+            <a href="#contact" class="cta-button">Mulai Sekarang</a>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title fade-in">Fitur Unggulan</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🧠</div>
+                    <h3>AI Chat Cerdas</h3>
+                    <p>Percakapan natural dengan AI yang memahami konteks dan memberikan jawaban akurat</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Generate Gambar AI</h3>
+                    <p>Buat gambar unik dari deskripsi teks dengan teknologi AI terdepan</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📝</div>
+                    <h3>Auto Reply Pintar</h3>
+                    <p>Respon otomatis yang relevan dan personal untuk setiap pesan</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎵</div>
+                    <h3>Download Media</h3>
+                    <p>Download video YouTube, TikTok, Instagram dengan kualitas terbaik</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Web Scraping</h3>
+                    <p>Ambil informasi real-time dari berbagai website</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Admin Panel</h3>
+                    <p>Dashboard lengkap untuk mengelola bot dan monitoring aktivitas</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2 class="section-title fade-in">Paket Harga</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card fade-in">
+                    <h3>Basic</h3>
+                    <div class="price">Rp 50K<span style="font-size: 1rem;">/bulan</span></div>
+                    <ul class="feature-list">
+                        <li>AI Chat Dasar</li>
+                        <li>Auto Reply</li>
+                        <li>Download Media</li>
+                        <li>Support 24/7</li>
+                        <li>1 Nomor WhatsApp</li>
+                    </ul>
+                    <a href="#contact" class="cta-button">Pilih Paket</a>
+                </div>
+                
+                <div class="pricing-card premium fade-in">
+                    <h3>Premium ⭐</h3>
+                    <div class="price">Rp 150K<span style="font-size: 1rem;">/bulan</span></div>
+                    <ul class="feature-list">
+                        <li>Semua Fitur Basic</li>
+                        <li>AI Generate Gambar</li>
+                        <li>Web Scraping</li>
+                        <li>Admin Panel</li>
+                        <li>Custom Commands</li>
+                        <li>Multi Device</li>
+                        <li>Priority Support</li>
+                    </ul>
+                    <a href="#contact" class="cta-button">Pilih Premium</a>
+                </div>
+                
+                <div class="pricing-card fade-in">
+                    <h3>Enterprise</h3>
+                    <div class="price">Rp 300K<span style="font-size: 1rem;">/bulan</span></div>
+                    <ul class="feature-list">
+                        <li>Semua Fitur Premium</li>
+                        <li>Unlimited Device</li>
+                        <li>Custom Integration</li>
+                        <li>Database Personal</li>
+                        <li>API Access</li>
+                        <li>Dedicated Support</li>
+                        <li>White Label</li>
+                    </ul>
+                    <a href="#contact" class="cta-button">Hubungi Kami</a>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <h3 style="margin-bottom: 1rem;">💰 Paket Sewa Khusus</h3>
+                <div style="background: white; padding: 2rem; border-radius: 15px; display: inline-block;">
+                    <p style="color: #333; font-size: 1.2rem; margin-bottom: 1rem;">
+                        <strong>Sewa Jangka Panjang - Hemat Lebih Banyak!</strong>
+                    </p>
+                    <p style="color: #666;">
+                        🏷️ Sewa 6 Bulan: Diskon 15%<br>
+                        🏷️ Sewa 1 Tahun: Diskon 25%<br>
+                        🏷️ Setup Fee: GRATIS untuk semua paket sewa!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title fade-in">Hubungi Kami</h2>
+            <div class="contact-info">
+                <div class="contact-item fade-in">
+                    <h3>📱 WhatsApp Admin</h3>
+                    <p>Konsultasi gratis dan demo bot</p>
+                    <a href="https://wa.me/6283121214520?text=Halo%20Admin,%20saya%20tertarik%20dengan%20Zeta%20AI%20Bot" class="whatsapp-btn" target="_blank">
+                        💬 Chat Admin
+                    </a>
+                </div>
+                <div class="contact-item fade-in">
+                    <h3>⚡ Respon Cepat</h3>
+                    <p>Tim support kami siap membantu 24/7</p>
+                    <p><strong>Admin: 083121214520</strong></p>
+                </div>
+                <div class="contact-item fade-in">
+                    <h3>🎯 Demo Gratis</h3>
+                    <p>Coba bot kami secara gratis selama 3 hari</p>
+                    <a href="https://wa.me/6283121214520?text=Saya%20ingin%20trial%20gratis%20Zeta%20AI%20Bot" class="whatsapp-btn" target="_blank">
+                        🆓 Trial Gratis
+                    </a>
+                </div>
+            </div>
+            
+            <div style="margin-top: 3rem; padding: 2rem; background: rgba(255,255,255,0.1); border-radius: 15px;">
+                <h3>🚀 Kenapa Memilih Zeta AI Bot?</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div>✅ Setup dalam 5 menit</div>
+                    <div>✅ No coding required</div>
+                    <div>✅ Update fitur berkala</div>
+                    <div>✅ Support Indonesia</div>
+                    <div>✅ Harga terjangkau</div>
+                    <div>✅ Garansi uptime 99%</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Zeta AI Bot. Semua hak dilindungi. Dibuat dengan ❤️ untuk kemudahan Anda.</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">
+                🤖 Bot WhatsApp Terpintar di Indonesia | Admin: 083121214520
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling untuk navigasi
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe semua elemen dengan class fade-in
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Parallax effect untuk floating elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelectorAll('.floating');
+            const speed = 0.5;
+
+            parallax.forEach(element => {
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+
+        // Feature cards animation on scroll
+        const featureCards = document.querySelectorAll('.feature-card');
+        featureCards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 200);
+        });
+
+        // Typing effect untuk hero title
+        const heroTitle = document.querySelector('.hero-content h1');
+        const text = heroTitle.textContent;
+        heroTitle.textContent = '';
+        
+        setTimeout(() => {
+            let i = 0;
+            const typeWriter = () => {
+                if (i < text.length) {
+                    heroTitle.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            };
+            typeWriter();
+        }, 1000);
+
+        // Floating button effect
+        const ctaButtons = document.querySelectorAll('.cta-button');
+        ctaButtons.forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.animation = 'pulse 0.5s ease-in-out';
+            });
+            
+            button.addEventListener('animationend', function() {
+                this.style.animation = '';
+            });
+        });
+
+        // Particle system untuk efek lebih hidup
+        function createParticles() {
+            const particles = document.createElement('div');
+            particles.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                overflow: hidden;
+                z-index: -1;
+            `;
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: absolute;
+                    width: 4px;
+                    height: 4px;
+                    background: rgba(255, 255, 255, 0.3);
+                    border-radius: 50%;
+                    animation: particleFloat ${Math.random() * 10 + 5}s linear infinite;
+                    left: ${Math.random() * 100}%;
+                    animation-delay: ${Math.random() * 5}s;
+                `;
+                particles.appendChild(particle);
+            }
+            
+            document.body.appendChild(particles);
+        }
+
+        // Add particle animation CSS
+        const particleStyle = document.createElement('style');
+        particleStyle.textContent = `
+            @keyframes particleFloat {
+                0% {
+                    transform: translateY(100vh) rotate(0deg);
+                    opacity: 0;
+                }
+                10% {
+                    opacity: 1;
+                }
+                90% {
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(-100px) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(particleStyle);
+
+        // Initialize particles
+        createParticles();
+
+        // Logo hover effect dengan bounce
+        const logoImg = document.querySelector('.logo img');
+        if (logoImg) {
+            logoImg.addEventListener('mouseenter', function() {
+                this.style.animation = 'rotate 2s linear infinite, glow 0.5s ease-in-out';
+            });
+            
+            logoImg.addEventListener('mouseleave', function() {
+                this.style.animation = 'rotate 10s linear infinite';
+            });
+        }
+
+        // Hero logo interactive effect
+        const heroLogo = document.querySelector('.hero-logo');
+        if (heroLogo) {
+            heroLogo.addEventListener('click', function() {
+                this.style.animation = 'none';
+                setTimeout(() => {
+                    this.style.animation = 'float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate, spin 2s ease-in-out';
+                }, 50);
+            });
+        }
+    </script>
+</body>
+</html>
